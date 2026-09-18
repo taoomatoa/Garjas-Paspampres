@@ -6,45 +6,14 @@
     <title>Aplikasi Penilaian Garjas & Renang</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body { 
-            background-color: #fff9db; 
-        }
-        .card { 
-            border-radius: 12px; 
-            box-shadow: 0 6px 12px rgba(0,0,0,0.08); 
-            border: none;
-        }
-        .header-panel { 
-            background: linear-gradient(135deg, #f59f00, #fab005); 
-            color: #212529; 
-            padding: 25px; 
-            border-radius: 12px 12px 0 0; 
-            font-weight: bold;
-        }
-        .nav-tabs .nav-link.active {
-            background-color: #f59f00 !important;
-            color: #212529 !important;
-            font-weight: bold;
-            border-color: #f59f00 #f59f00 #fff;
-        }
-        .nav-tabs .nav-link {
-            color: #495057;
-        }
-        .btn-warning-custom {
-            background-color: #f59f00;
-            border-color: #f08c00;
-            color: #212529;
-            font-weight: bold;
-        }
-        .btn-warning-custom:hover {
-            background-color: #f08c00;
-            border-color: #e67700;
-            color: #fff;
-        }
-        .table-custom-header {
-            background-color: #fcc419;
-            color: #212529;
-        }
+        body { background-color: #fff9db; }
+        .card { border-radius: 12px; box-shadow: 0 6px 12px rgba(0,0,0,0.08); border: none; }
+        .header-panel { background: linear-gradient(135deg, #f59f00, #fab005); color: #212529; padding: 25px; border-radius: 12px 12px 0 0; font-weight: bold; }
+        .nav-tabs .nav-link.active { background-color: #f59f00 !important; color: #212529 !important; font-weight: bold; border-color: #f59f00 #f59f00 #fff; }
+        .nav-tabs .nav-link { color: #495057; }
+        .btn-warning-custom { background-color: #f59f00; border-color: #f08c00; color: #212529; font-weight: bold; }
+        .btn-warning-custom:hover { background-color: #f08c00; border-color: #e67700; color: #fff; }
+        .table-custom-header { background-color: #fcc419; color: #212529; }
     </style>
 </head>
 <body>
@@ -55,7 +24,7 @@
             <div class="card">
                 <div class="header-panel text-center">
                     <h2 class="mb-1">PANEL PENILAIAN KESEGARAN JASMANI (GARJAS)</h2>
-                    <p class="mb-0 text-dark opacity-75">Sistem Perhitungan Nilai & Sinkronisasi Spreadsheet</p>
+                    <p class="mb-0 text-dark opacity-75">Sistem Perhitungan Nilai Berdasarkan Usia & Spreadsheet</p>
                 </div>
                 <div class="card-body p-4">
                     
@@ -87,8 +56,9 @@
 
                                 <div class="row g-3 mb-4">
                                     <div class="col-md-4">
-                                        <label class="form-label fw-semibold">Kategori (Contoh: Pamen / Pama / Bintara / Tamtama)</label>
-                                        <input type="text" class="form-control" id="kategori" placeholder="Masukkan kategori" required>
+                                        <label class="form-label fw-semibold">Usia / Umur (Tahun)</label>
+                                        <input type="number" class="form-control" id="usia" placeholder="Contoh: 28" required min="17" max="65">
+                                        <small class="text-muted" id="infoGolongan">Golongan Umur otomatis terdeteksi</small>
                                     </div>
                                     <div class="col-md-4">
                                         <label class="form-label fw-semibold">Satuan / Detasemen</label>
@@ -106,7 +76,7 @@
                                 <h5 class="text-secondary mb-3 border-bottom pb-2">2. Input Hasil Tes</h5>
                                 <div class="row g-3 mb-4">
                                     <div class="col-md-6">
-                                        <label class="form-label fw-semibold">Garjas A - Lari (Meter / Menit misal: 3000)</label>
+                                        <label class="form-label fw-semibold">Garjas A - Lari (Meter / Menit)</label>
                                         <input type="number" class="form-control" id="garjasA" placeholder="Contoh: 2400" required>
                                     </div>
                                     <div class="col-md-6">
@@ -143,7 +113,7 @@
                         <div class="tab-pane fade" id="cari-pane" role="tabpanel">
                             <h5 class="text-secondary mb-3">Pencarian Data Anggota</h5>
                             <div class="input-group mb-4">
-                                <input type="text" class="form-control" id="keywordCari" placeholder="Cari berdasarkan Nama atau Satuan...">
+                                <input type="text" class="form-control" id="keywordCari" placeholder="Cari berdasarkan Nama, Satuan, atau Golongan Umur...">
                                 <button class="btn btn-warning-custom" type="button" id="btnCari">Cari Data</button>
                             </div>
 
@@ -154,7 +124,7 @@
                                             <th>Waktu</th>
                                             <th>Nama</th>
                                             <th>Pangkat</th>
-                                            <th>Kategori</th>
+                                            <th>Kategori Umur</th>
                                             <th>Satuan</th>
                                             <th>Gender</th>
                                             <th>Nilai A</th>
@@ -181,7 +151,34 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     // GANTI DENGAN URL WEB APP GOOGLE APPS SCRIPT ANDA
-    const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwx8scqjtJzNjgsIt3pLKx9ANsrYNyj3iGsANwn-QCarynrCn1-GgOxlqFEjuIapk5u/exec';
+    const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzLlKiZvj-pSBN3rCB_PSg03ZO8RA2EWkdOrIaqr4v5vq43K4VMfz7MAFZPTK6Wl8iZ/exec';
+
+    // Fungsi otomatis menentukan Golongan Umur I - X berdasarkan usia
+    function tentukanGolonganUmur(usia) {
+        if (usia <= 21) return "Golongan Umur I";
+        else if (usia <= 25) return "Golongan Umur II";
+        else if (usia <= 30) return "Golongan Umur III";
+        else if (usia <= 35) return "Golongan Umur IV";
+        else if (usia <= 40) return "Golongan Umur V";
+        else if (usia <= 45) return "Golongan Umur VI";
+        else if (usia <= 50) return "Golongan Umur VII";
+        else if (usia <= 53) return "Golongan Umur VIII";
+        else if (usia <= 57) return "Golongan Umur IX";
+        else return "Golongan Umur X";
+    }
+
+    // Live update teks keterangan golongan saat usia diketik
+    document.getElementById('usia').addEventListener('input', function() {
+        const usia = parseInt(this.value);
+        const info = document.getElementById('infoGolongan');
+        if (!isNaN(usia)) {
+            info.innerText = "Terdeteksi: " + tentukanGolonganUmur(usia);
+            info.className = "text-success fw-bold";
+        } else {
+            info.innerText = "Golongan Umur otomatis terdeteksi";
+            info.className = "text-muted";
+        }
+    });
 
     document.getElementById('garjasForm').addEventListener('submit', function(e) {
         e.preventDefault();
@@ -192,7 +189,8 @@
 
         const nama = document.getElementById('nama').value;
         const pangkat = document.getElementById('pangkat').value;
-        const kategori = document.getElementById('kategori').value;
+        const usia = parseInt(document.getElementById('usia').value);
+        const kategoriUmur = tentukanGolonganUmur(usia);
         const satuan = document.getElementById('satuan').value;
         const jenisKelamin = document.getElementById('jenisKelamin').value;
         const garjasA = parseFloat(document.getElementById('garjasA').value);
@@ -202,6 +200,7 @@
         const pushUp = parseFloat(document.getElementById('pushUp').value);
         const shuttleRun = parseFloat(document.getElementById('shuttleRun').value);
 
+        // Rumus/Logika penilaian (bisa disesuaikan dengan tabel konversi TNI AD)
         const nilaiA = Math.min(100, Math.max(40, Math.round(garjasA / 30))); 
         const nilaiB = Math.min(100, Math.max(40, Math.round((pullUp * 5 + sitUp + pushUp) / 3)));
         const nilaiRenang = Math.min(100, Math.max(40, Math.round(300 / renang)));
@@ -211,7 +210,8 @@
             action: "simpan",
             nama: nama,
             pangkat: pangkat,
-            kategori: kategori,
+            umurAngka: usia,
+            kategoriUmur: kategoriUmur,
             satuan: satuan,
             jenisKelamin: jenisKelamin,
             garjasA: garjasA,
@@ -234,6 +234,8 @@
         .then(data => {
             alert('Data Berhasil Disimpan & Masuk ke Spreadsheet!');
             document.getElementById('garjasForm').reset();
+            document.getElementById('infoGolongan').innerText = "Golongan Umur otomatis terdeteksi";
+            document.getElementById('infoGolongan').className = "text-muted";
             btn.innerText = "Hitung & Simpan ke Spreadsheet";
             btn.disabled = false;
         })
@@ -265,7 +267,7 @@
                     <td>${new Date(row.timestamp).toLocaleString()}</td>
                     <td>${row.nama}</td>
                     <td>${row.pangkat}</td>
-                    <td>${row.kategori}</td>
+                    <td>${row.kategoriUmur}</td>
                     <td>${row.satuan}</td>
                     <td>${row.jenisKelamin}</td>
                     <td>${row.nilaiA}</td>

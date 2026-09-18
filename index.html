@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aplikasi Penilaian Garjas Pasapampres</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #f4f6f9; }
+        .card { border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .header-panel { background: #1b3b2b; color: white; padding: 20px; border-radius: 12px 12px 0 0; }
+    </style>
+</head>
+<body>
+
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card">
+                <div class="header-panel text-center">
+                    <h2>PANEL PENILAIAN KESEGARAN JASMANI (GARJAS)</h2>
+                    <p class="mb-0">Sistem Perhitungan Nilai & Sinkronisasi Spreadsheet</p>
+                </div>
+                <div class="card-body p-4">
+                    
+                    <!-- Navigasi Tab -->
+                    <ul class="nav nav-tabs mb-4" id="myTab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="input-tab" data-bs-toggle="tab" data-bs-target="#input-pane" type="button" role="tab">Input & Hitung Nilai</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="cari-tab" data-bs-toggle="tab" data-bs-target="#cari-pane" type="button" role="tab">Cari Data Tersimpan</button>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content" id="myTabContent">
+                        <!-- TAB INPUT -->
+                        <div class="tab-pane fade show active" id="input-pane" role="tabpanel">
+                            <form id="garjasForm">
+                                <h5 class="text-secondary mb-3">1. Data Personel</h5>
+                                <div class="row g-3 mb-4">
+                                    <div class="col-md-6">
+                                        <label class="form-label">Nama Lengkap</label>
+                                        <input type="text" class="form-control" id="nama" required>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label class="form-label">Pangkat / Korps</label>
+                                        <input type="text" class="form-control" id="pangkat" required>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label class="form-label">Jenis Kelamin</label>
+                                        <select class="form-select" id="jenisKelamin" required>
+                                            <option value="Pria">Pria</option>
+                                            <option value="Wanita">Wanita (Kowad)</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <h5 class="text-secondary mb-3">2. Input Hasil Tes</h5>
+                                <div class="row g-3 mb-4">
+                                    <div class="col-md-4">
+                                        <label class="form-label">Garjas A - Lari (Meter / Menit misal: 3000m)</label>
+                                        <input type="number" class="form-control" id="garjasA" placeholder="Contoh: 2400" required>
+                                        <small class="text-muted">Masukkan jarak tempuh dalam waktu standar (atau sesuaikan konversi)</small>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label">Renang (Waktu dalam Detik)</label>
+                                        <input type="number" class="form-control" id="renang" placeholder="Contoh: 45" required>
+                                    </div>
+                                </div>
+
+                                <h6 class="text-dark fw-bold">Garjas B (Jumlah Repetisi 1 Menit)</h6>
+                                <div class="row g-3 mb-4">
+                                    <div class="col-md-3">
+                                        <label class="form-label">Pull Up / Chinging</label>
+                                        <input type="number" class="form-control" id="pullUp" value="0" required>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label class="form-label">Sit Up</label>
+                                        <input type="number" class="form-control" id="sitUp" value="0" required>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label class="form-label">Push Up</label>
+                                        <input type="number" class="form-control" id="pushUp" value="0" required>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label class="form-label">Shuttle Run (Detik)</label>
+                                        <input type="number" step="0.1" class="form-control" id="shuttleRun" value="18" required>
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="btn btn-success w-100 py-2 fw-bold" id="btnSimpan">Hitung & Simpan ke Spreadsheet</button>
+                            </form>
+                        </div>
+
+                        <!-- TAB PENCARIAN -->
+                        <div class="tab-pane fade" id="cari-pane" role="tabpanel">
+                            <h5 class="text-secondary mb-3">Pencarian Data Anggota</h5>
+                            <div class="input-group mb-4">
+                                <input type="text" class="form-control" id="keywordCari" placeholder="Masukkan nama yang ingin dicari...">
+                                <button class="btn btn-primary" type="button" id="btnCari">Cari Data</button>
+                            </div>
+
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-striped align-middle">
+                                    <thead class="table-dark">
+                                        <tr>
+                                            <th>Waktu</th>
+                                            <th>Nama</th>
+                                            <th>Pangkat</th>
+                                            <th>Gender</th>
+                                            <th>Nilai A</th>
+                                            <th>Nilai B</th>
+                                            <th>Nilai Renang</th>
+                                            <th>Nilai Akhir</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tabelHasil">
+                                        <tr><td colspan="8" class="text-center">Belum ada data yang ditampilkan. Klik "Cari Data".</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // GANTI DENGAN URL WEB APP GOOGLE APPS SCRIPT ANDA
+    const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxdwnqsWaua0OedTzlTKONnhwaCg8GRqf4L7UQURNFstfw2KHiuSbEK5eTcPhGmgDeX/exec';
+
+    // Logika Simulasi Perhitungan Nilai (Sederhana/Contoh)
+    document.getElementById('garjasForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const btn = document.getElementById('btnSimpan');
+        btn.innerText = "Menyimpan...";
+        btn.disabled = true;
+
+        const nama = document.getElementById('nama').value;
+        const pangkat = document.getElementById('pangkat').value;
+        const jenisKelamin = document.getElementById('jenisKelamin').value;
+        const garjasA = parseFloat(document.getElementById('garjasA').value);
+        const renang = parseFloat(document.getElementById('renang').value);
+        const pullUp = parseFloat(document.getElementById('pullUp').value);
+        const sitUp = parseFloat(document.getElementById('sitUp').value);
+        const pushUp = parseFloat(document.getElementById('pushUp').value);
+        const shuttleRun = parseFloat(document.getElementById('shuttleRun').value);
+
+        // Rumus/Logika dummy penilaian (bisa disesuaikan dengan tabel konversi TNI AD yang valid)
+        const nilaiA = Math.min(100, Math.max(40, Math.round(garjasA / 30))); 
+        const nilaiB = Math.min(100, Math.max(40, Math.round((pullUp * 5 + sitUp + pushUp) / 3)));
+        const nilaiRenang = Math.min(100, Math.max(40, Math.round(300 / renang)));
+        const nilaiAkhir = Math.round((nilaiA + nilaiB + nilaiRenang) / 3);
+
+        const payload = {
+            action: "simpan",
+            nama: nama,
+            pangkat: pangkat,
+            jenisKelamin: jenisKelamin,
+            garjasA: garjasA,
+            nilaiA: nilaiA,
+            pullUp: pullUp,
+            sitUp: sitUp,
+            pushUp: pushUp,
+            shuttleRun: shuttleRun,
+            nilaiB: nilaiB,
+            renang: renang,
+            nilaiRenang: nilaiRenang,
+            nilaiAkhir: nilaiAkhir
+        };
+
+        fetch(WEB_APP_URL, {
+            method: 'POST',
+            body: JSON.stringify(payload)
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert('Data Berhasil Disimpan & Masuk ke Spreadsheet!');
+            document.getElementById('garjasForm').reset();
+            btn.innerText = "Hitung & Simpan ke Spreadsheet";
+            btn.disabled = false;
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Terjadi kesalahan saat menyimpan data.');
+            btn.innerText = "Hitung & Simpan ke Spreadsheet";
+            btn.disabled = false;
+        });
+    });
+
+    // Tombol Pencarian
+    document.getElementById('btnCari').addEventListener('click', function() {
+        const keyword = document.getElementById('keywordCari').value;
+        const tbody = document.getElementById('tabelHasil');
+        tbody.innerHTML = `<tr><td colspan="8" class="text-center">Mencari data...</td></tr>`;
+
+        fetch(`${WEB_APP_URL}?action=cari&keyword=${encodeURIComponent(keyword)}`)
+        .then(response => response.json())
+        .then(data => {
+            tbody.innerHTML = '';
+            if(data.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="8" class="text-center">Tidak ada data ditemukan.</td></tr>`;
+                return;
+            }
+            data.forEach(row => {
+                let tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${new Date(row.timestamp).toLocaleString()}</td>
+                    <td>${row.nama}</td>
+                    <td>${row.pangkat}</td>
+                    <td>${row.jenisKelamin}</td>
+                    <td>${row.nilaiA}</td>
+                    <td>${row.nilaiB}</td>
+                    <td>${row.nilaiRenang}</td>
+                    <td><b>${row.nilaiAkhir}</b></td>
+                `;
+                tbody.appendChild(tr);
+            });
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            tbody.innerHTML = `<tr><td colspan="8" class="text-center text-danger">Gagal memuat data.</td></tr>`;
+        });
+    });
+</script>
+
+</body>
+</html>

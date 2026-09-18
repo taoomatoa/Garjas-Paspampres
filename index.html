@@ -6,35 +6,78 @@
     <title>Aplikasi Penilaian Garjas & Renang</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body { background-color: #fff9db; }
-        .card { border-radius: 12px; box-shadow: 0 6px 12px rgba(0,0,0,0.08); border: none; }
-        .header-panel { background: linear-gradient(135deg, #f59f00, #fab005); color: #212529; padding: 25px; border-radius: 12px 12px 0 0; font-weight: bold; }
-        .nav-tabs .nav-link.active { background-color: #f59f00 !important; color: #212529 !important; font-weight: bold; border-color: #f59f00 #f59f00 #fff; }
-        .nav-tabs .nav-link { color: #495057; }
-        .btn-warning-custom { background-color: #f59f00; border-color: #f08c00; color: #212529; font-weight: bold; }
-        .btn-warning-custom:hover { background-color: #f08c00; border-color: #e67700; color: #fff; }
-        .table-custom-header { background-color: #fcc419; color: #212529; }
+        body { 
+            background-color: #f4f6f9; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        /* Mengatur agar kontainer panel lebih lebar di PC, tapi tetap fleksibel di HP */
+        .main-container {
+            max-width: 1300px;
+            margin: 30px auto;
+            padding: 0 15px;
+        }
+        .card { 
+            border-radius: 16px; 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1); 
+            border: none; 
+        }
+        .header-panel { 
+            background: linear-gradient(135deg, #f59f00, #f08c00); 
+            color: #212529; 
+            padding: 35px 20px; 
+            border-radius: 16px 16px 0 0; 
+            font-weight: bold; 
+        }
+        .nav-tabs .nav-link.active { 
+            background-color: #f59f00 !important; 
+            color: #212529 !important; 
+            font-weight: bold; 
+            border-color: #f59f00 #f59f00 #fff; 
+        }
+        .nav-tabs .nav-link { 
+            color: #495057; 
+            font-weight: 600;
+        }
+        .btn-warning-custom { 
+            background-color: #f59f00; 
+            border-color: #f08c00; 
+            color: #212529; 
+            font-weight: bold; 
+        }
+        .btn-warning-custom:hover { 
+            background-color: #e67700; 
+            border-color: #d97300; 
+            color: #fff; 
+        }
+        .table-custom-header { 
+            background-color: #ffec99; 
+            color: #212529; 
+        }
+        .form-control, .form-select {
+            padding: 10px 15px;
+            border-radius: 8px;
+        }
     </style>
 </head>
 <body>
 
-<div class="container my-5">
+<div class="main-container">
     <div class="row justify-content-center">
-        <div class="col-lg-10">
+        <div class="col-12">
             <div class="card">
                 <div class="header-panel text-center">
-                    <h2 class="mb-1">PANEL PENILAIAN KESEGARAN JASMANI (GARJAS)</h2>
-                    <p class="mb-0 text-dark opacity-75">Sistem Perhitungan Nilai Berdasarkan Usia & Spreadsheet</p>
+                    <h1 class="mb-2 fs-2 fs-md-1">PANEL PENILAIAN KESEGARAN JASMANI (GARJAS)</h1>
+                    <p class="mb-0 text-dark opacity-80 fs-6">Sistem Perhitungan Nilai Berdasarkan Usia & Rekapitulasi Spreadsheet</p>
                 </div>
-                <div class="card-body p-4">
+                <div class="card-body p-4 p-lg-5">
                     
                     <!-- Navigasi Tab -->
                     <ul class="nav nav-tabs mb-4" id="myTab" role="tablist">
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link active" id="input-tab" data-bs-toggle="tab" data-bs-target="#input-pane" type="button" role="tab">Input & Hitung Nilai</button>
+                            <button class="nav-link active py-2 px-4" id="input-tab" data-bs-toggle="tab" data-bs-target="#input-pane" type="button" role="tab">Input & Hitung Nilai</button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="cari-tab" data-bs-toggle="tab" data-bs-target="#cari-pane" type="button" role="tab">Cari Data Tersimpan</button>
+                            <button class="nav-link py-2 px-4" id="cari-tab" data-bs-toggle="tab" data-bs-target="#cari-pane" type="button" role="tab">Cari Data Tersimpan</button>
                         </li>
                     </ul>
 
@@ -42,15 +85,15 @@
                         <!-- TAB INPUT -->
                         <div class="tab-pane fade show active" id="input-pane" role="tabpanel">
                             <form id="garjasForm">
-                                <h5 class="text-secondary mb-3 border-bottom pb-2">1. Data Personel</h5>
+                                <h4 class="text-secondary mb-3 border-bottom pb-2">1. Data Personel</h4>
                                 <div class="row g-3 mb-3">
                                     <div class="col-md-6">
                                         <label class="form-label fw-semibold">Nama Lengkap</label>
-                                        <input type="text" class="form-control" id="nama" required>
+                                        <input type="text" class="form-control" id="nama" placeholder="Masukkan nama lengkap" required>
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label fw-semibold">Pangkat / Korps</label>
-                                        <input type="text" class="form-control" id="pangkat" required>
+                                        <input type="text" class="form-control" id="pangkat" placeholder="Contoh: Serda / Inf" required>
                                     </div>
                                 </div>
 
@@ -58,7 +101,7 @@
                                     <div class="col-md-4">
                                         <label class="form-label fw-semibold">Usia / Umur (Tahun)</label>
                                         <input type="number" class="form-control" id="usia" placeholder="Contoh: 28" required min="17" max="65">
-                                        <small class="text-muted" id="infoGolongan">Golongan Umur otomatis terdeteksi</small>
+                                        <small class="text-muted d-block mt-1" id="infoGolongan">Golongan Umur otomatis terdeteksi</small>
                                     </div>
                                     <div class="col-md-4">
                                         <label class="form-label fw-semibold">Satuan / Detasemen</label>
@@ -73,10 +116,10 @@
                                     </div>
                                 </div>
 
-                                <h5 class="text-secondary mb-3 border-bottom pb-2">2. Input Hasil Tes</h5>
+                                <h4 class="text-secondary mb-3 border-bottom pb-2">2. Input Hasil Tes</h4>
                                 <div class="row g-3 mb-4">
                                     <div class="col-md-6">
-                                        <label class="form-label fw-semibold">Garjas A - Lari (Meter / Menit)</label>
+                                        <label class="form-label fw-semibold">Garjas A - Lari (Meter / Waktu)</label>
                                         <input type="number" class="form-control" id="garjasA" placeholder="Contoh: 2400" required>
                                     </div>
                                     <div class="col-md-6">
@@ -85,42 +128,42 @@
                                     </div>
                                 </div>
 
-                                <h6 class="text-dark fw-bold mb-3">Garjas B (Jumlah Repetisi / Waktu)</h6>
+                                <h5 class="text-dark fw-bold mb-3">Garjas B (Jumlah Repetisi / Waktu)</h5>
                                 <div class="row g-3 mb-4">
-                                    <div class="col-md-3">
+                                    <div class="col-md-3 col-6">
                                         <label class="form-label fw-semibold">Pull Up / Chinging</label>
                                         <input type="number" class="form-control" id="pullUp" value="0" required>
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-3 col-6">
                                         <label class="form-label fw-semibold">Sit Up</label>
                                         <input type="number" class="form-control" id="sitUp" value="0" required>
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-3 col-6">
                                         <label class="form-label fw-semibold">Push Up</label>
                                         <input type="number" class="form-control" id="pushUp" value="0" required>
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-3 col-6">
                                         <label class="form-label fw-semibold">Shuttle Run (Detik)</label>
                                         <input type="number" step="0.1" class="form-control" id="shuttleRun" value="18" required>
                                     </div>
                                 </div>
 
-                                <button type="submit" class="btn btn-warning-custom w-100 py-3 shadow-sm" id="btnSimpan">Hitung & Simpan ke Spreadsheet</button>
+                                <button type="submit" class="btn btn-warning-custom w-100 py-3 shadow-sm fs-5 mt-2" id="btnSimpan">Hitung & Simpan ke Spreadsheet</button>
                             </form>
                         </div>
 
                         <!-- TAB PENCARIAN -->
                         <div class="tab-pane fade" id="cari-pane" role="tabpanel">
-                            <h5 class="text-secondary mb-3">Pencarian Data Anggota</h5>
+                            <h4 class="text-secondary mb-3">Pencarian Data Anggota</h4>
                             <div class="input-group mb-4">
-                                <input type="text" class="form-control" id="keywordCari" placeholder="Cari berdasarkan Nama, Satuan, atau Golongan Umur...">
-                                <button class="btn btn-warning-custom" type="button" id="btnCari">Cari Data</button>
+                                <input type="text" class="form-control form-control-lg" id="keywordCari" placeholder="Cari berdasarkan Nama, Satuan, atau Golongan Umur...">
+                                <button class="btn btn-warning-custom px-4" type="button" id="btnCari">Cari Data</button>
                             </div>
 
                             <div class="table-responsive">
-                                <table class="table table-bordered table-striped align-middle">
+                                <table class="table table-bordered table-striped align-middle fs-6">
                                     <thead>
-                                        <tr class="table-custom-header">
+                                        <tr class="table-custom-header text-center">
                                             <th>Waktu</th>
                                             <th>Nama</th>
                                             <th>Pangkat</th>
@@ -134,7 +177,7 @@
                                         </tr>
                                     </thead>
                                     <tbody id="tabelHasil">
-                                        <tr><td colspan="10" class="text-center text-muted">Belum ada data yang ditampilkan. Klik "Cari Data".</td></tr>
+                                        <tr><td colspan="10" class="text-center text-muted py-4">Belum ada data yang ditampilkan. Klik "Cari Data".</td></tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -151,9 +194,8 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     // GANTI DENGAN URL WEB APP GOOGLE APPS SCRIPT ANDA
-    const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzLlKiZvj-pSBN3rCB_PSg03ZO8RA2EWkdOrIaqr4v5vq43K4VMfz7MAFZPTK6Wl8iZ/exec';
+    const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwn8bg1UE7x9Fxr_XIKk5yVYluTpp1YRDsRcjk-vTHfj3v9Gr8NGlnxqjwmSHxo99g1/exec';
 
-    // Fungsi otomatis menentukan Golongan Umur I - X berdasarkan usia
     function tentukanGolonganUmur(usia) {
         if (usia <= 21) return "Golongan Umur I";
         else if (usia <= 25) return "Golongan Umur II";
@@ -167,16 +209,15 @@
         else return "Golongan Umur X";
     }
 
-    // Live update teks keterangan golongan saat usia diketik
     document.getElementById('usia').addEventListener('input', function() {
         const usia = parseInt(this.value);
         const info = document.getElementById('infoGolongan');
         if (!isNaN(usia)) {
             info.innerText = "Terdeteksi: " + tentukanGolonganUmur(usia);
-            info.className = "text-success fw-bold";
+            info.className = "text-success fw-bold d-block mt-1";
         } else {
             info.innerText = "Golongan Umur otomatis terdeteksi";
-            info.className = "text-muted";
+            info.className = "text-muted d-block mt-1";
         }
     });
 
@@ -200,7 +241,6 @@
         const pushUp = parseFloat(document.getElementById('pushUp').value);
         const shuttleRun = parseFloat(document.getElementById('shuttleRun').value);
 
-        // Rumus/Logika penilaian (bisa disesuaikan dengan tabel konversi TNI AD)
         const nilaiA = Math.min(100, Math.max(40, Math.round(garjasA / 30))); 
         const nilaiB = Math.min(100, Math.max(40, Math.round((pullUp * 5 + sitUp + pushUp) / 3)));
         const nilaiRenang = Math.min(100, Math.max(40, Math.round(300 / renang)));
@@ -235,7 +275,7 @@
             alert('Data Berhasil Disimpan & Masuk ke Spreadsheet!');
             document.getElementById('garjasForm').reset();
             document.getElementById('infoGolongan').innerText = "Golongan Umur otomatis terdeteksi";
-            document.getElementById('infoGolongan').className = "text-muted";
+            document.getElementById('infoGolongan').className = "text-muted d-block mt-1";
             btn.innerText = "Hitung & Simpan ke Spreadsheet";
             btn.disabled = false;
         })
@@ -247,40 +287,39 @@
         });
     });
 
-    // Tombol Pencarian
     document.getElementById('btnCari').addEventListener('click', function() {
         const keyword = document.getElementById('keywordCari').value;
         const tbody = document.getElementById('tabelHasil');
-        tbody.innerHTML = `<tr><td colspan="10" class="text-center">Mencari data...</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="10" class="text-center py-4">Mencari data...</td></tr>`;
 
         fetch(`${WEB_APP_URL}?action=cari&keyword=${encodeURIComponent(keyword)}`)
         .then(response => response.json())
         .then(data => {
             tbody.innerHTML = '';
             if(data.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="10" class="text-center">Tidak ada data ditemukan.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="10" class="text-center py-4">Tidak ada data ditemukan.</td></tr>`;
                 return;
             }
             data.forEach(row => {
                 let tr = document.createElement('tr');
                 tr.innerHTML = `
-                    <td>${new Date(row.timestamp).toLocaleString()}</td>
+                    <td class="text-nowrap">${new Date(row.timestamp).toLocaleString()}</td>
                     <td>${row.nama}</td>
                     <td>${row.pangkat}</td>
                     <td>${row.kategoriUmur}</td>
                     <td>${row.satuan}</td>
                     <td>${row.jenisKelamin}</td>
-                    <td>${row.nilaiA}</td>
-                    <td>${row.nilaiB}</td>
-                    <td>${row.nilaiRenang}</td>
-                    <td><b>${row.nilaiAkhir}</b></td>
+                    <td class="text-center">${row.nilaiA}</td>
+                    <td class="text-center">${row.nilaiB}</td>
+                    <td class="text-center">${row.nilaiRenang}</td>
+                    <td class="text-center"><b>${row.nilaiAkhir}</b></td>
                 `;
                 tbody.appendChild(tr);
             });
         })
         .catch(error => {
             console.error('Error:', error);
-            tbody.innerHTML = `<tr><td colspan="10" class="text-center text-danger">Gagal memuat data.</td></tr>`;
+            tbody.innerHTML = `<tr><td colspan="10" class="text-center text-danger py-4">Gagal memuat data.</td></tr>`;
         });
     });
 </script>
